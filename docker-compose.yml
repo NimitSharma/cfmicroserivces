@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  catalogservice:
+    container_name: catalogservice      
+    build: ./catalogservice
+    image: catalogservice
+    depends_on:
+      - db
+    ports:
+      - 8500:8500
+    env_file:
+      - ./catalogservice/coldfusion.env
+  customerservice:
+    container_name: customerservice      
+    build: ./customerservice
+    image: customerservice
+    depends_on:
+      - db
+    ports:
+      - 8501:8500
+    env_file:
+      - ./customerservice/coldfusion.env
+  orderservice:
+    container_name: orderservice
+    build: ./orderservice
+    image: orderservice
+    depends_on:
+      - db
+    ports:
+      - 8502:8500
+    env_file:
+      - ./orderservice/coldfusion.env
+  db:
+    container_name: mydb
+    image: mysql:5.7.23
+    ports:
+      - 3306:3306
+    volumes:
+      - /opt/cfsummit/mysql/datadir:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=P@$$w0rd
+      -  MYSQL_ROOT_HOST=%
+      -  MYSQL_USER=root
+      - MYSQL_PASSWORD=P@$$w0rd        
+
